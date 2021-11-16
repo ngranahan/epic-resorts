@@ -11,3 +11,4 @@ provider:
 functions:
   getResorts:
     handler: handler.getResorts
+    environment: ${file(env.json)}
