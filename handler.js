@@ -1,7 +1,7 @@
 const {scrape, getResortLocation, delay, formatData} = require('./helpers')
 const axios = require('axios')
 
-module.exports.getResorts = async () => {
+module.exports.getResorts = async (event, context, cb) => {
   try {
     const {data} = await axios('https://www.epicpass.com/')
     const resortData = await scrape(data)
@@ -17,6 +17,7 @@ module.exports.getResorts = async () => {
     }
     const formattedResortData = formatData(resortData)
     console.log('formattedResortData', formattedResortData)
+    cb(null, formattedResortData)
   } catch (e) {
     console.error(e);
   }
