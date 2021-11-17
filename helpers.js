@@ -30,6 +30,7 @@ async function scrape(html) {
       regions[region].includes(location) ? resortObj.region = region : null
     })
 
+    // Adding exceptions for resorts that don't return lat/lng from HERE api based on resort name
     if (resortObj.region === 'australia' || resortObj.region === 'canada') {
       resortObj.query = `${resort}, ${resortObj.region}`
     } else if (location === 'CA/NV') {
