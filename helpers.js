@@ -25,6 +25,7 @@ async function scrape(html) {
     const resort = textArr[0]
     const location = textArr[1].trim()
     resortObj.resortName = resort
+    resortObj.label = text
     Object.keys(regions).forEach((region, i) => {
       regions[region].includes(location) ? resortObj.region = region : null
     })
