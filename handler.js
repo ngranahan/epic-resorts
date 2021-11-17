@@ -3,7 +3,12 @@ const axios = require('axios')
 
 module.exports.getResorts = async (event, context, cb) => {
   try {
-    const {data} = await axios('https://www.epicpass.com/')
+    // epicpass.com/passes/epic-pass is built with react, which won't return page html to the scraper by default. spoofing web crawler user-agent to get html.
+    const {data} = await axios.get('https://www.epicpass.com/passes/epic-pass', {
+      headers: {
+        'User-Agent': 'Googlebot-News'
+      }
+    })
     const resortData = await scrape(data)
     if (resortData.resorts && resortData.resorts.length) {
       for (const [i, resort] of resortData.resorts.entries()) {
@@ -11,12 +16,11 @@ module.exports.getResorts = async (event, context, cb) => {
         if (i%5 === 0) {
           await delay(1000)
         }
-        const location = await getResortLocation(resort.resortName, resort.region)
+        const location = await getResortLocation(resort)
         resortData.resorts[i].location = location;
       }
     }
     const formattedResortData = formatData(resortData)
-    console.log('formattedResortData', formattedResortData)
     cb(null, formattedResortData)
   } catch (e) {
     console.error(e);
