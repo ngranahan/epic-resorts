@@ -21,7 +21,15 @@ module.exports.getResorts = async (event, context, cb) => {
       }
     }
     const formattedResortData = formatData(resortData)
-    cb(null, formattedResortData)
+    const response = {
+      "statusCode": 200,
+      "body": JSON.stringify(formattedResortData),
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+    cb(null, response)
   } catch (e) {
     console.error(e);
   }
